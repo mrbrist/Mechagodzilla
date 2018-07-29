@@ -1,0 +1,19 @@
+{
+  "name": "mechagodzilla",
+  "version": "0.0.1",
+  "description": "A discord bot",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "discord.js-commando": "^0.10.0",
+    "ffmpeg-binaries": "^4.0.0",
+    "node-opus": "^0.3.0",
+    "ytdl-core": "^0.21.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Brist",
+  "license": "MIT"
+}
