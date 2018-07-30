@@ -34,7 +34,8 @@ module.exports = class AddCommand extends Command {
     run(msg, { game, spots, time }) {
       var s1 = players[msg.guild.id] = {}
       var s2 = s1[game.toString()] = []
-      msg.channel.send(`A game of **${game}** is starting with **${spots}** free spots, react with :thumbsup: if you will be playing *[this will be active for ${time}m]*`)
+      var teamRole = msg.channel.guild.roles.find('name', 'Team');
+      msg.channel.send(`${teamRole} A game of **${game}** is starting with **${spots}** free spots, react with :thumbsup: if you will be playing *[this will be active for ${time}m]*`)
           .then(function (message) {
             message.react("👍")
             const filter = (reaction, user) => reaction.emoji.name === '👍'
