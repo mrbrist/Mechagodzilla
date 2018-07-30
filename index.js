@@ -5,7 +5,7 @@ const settings = require('./settings.json')
 
 // Music Queue
 module.exports.queue = {};
-module.exports.players = {};
+module.exports.players = { '459047097547882518': { ow: [ 'Brist#3703','Brist#3703','Brist#3703','Brist#3703','Brist#3703','Brist#3703','Brist#3703' ] } };
 
 // Setup the Client
 const client = new CommandoClient({

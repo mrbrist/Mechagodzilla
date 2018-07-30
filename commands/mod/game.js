@@ -32,6 +32,8 @@ module.exports = class AddCommand extends Command {
     }
 
     run(msg, { game, spots, time }) {
+      var s1 = players[msg.guild.id] = {}
+      var s2 = s1[game.toString()] = []
       msg.channel.send(`A game of **${game}** is starting with **${spots}** free spots, react with :thumbsup: if you will be playing *[this will be active for ${time}m]*`)
           .then(function (message) {
             message.react("👍")
@@ -40,9 +42,8 @@ module.exports = class AddCommand extends Command {
             // collector.on('collect', r => console.log(`Collected ${r.users.last()}`));
             function collection(user) {
               if (!user.bot) {
-                var s1 = players[msg.guild.id] = {}
-                var s2 = s1[game.toString()] = []
                 s2.push(`${user.username}#${user.discriminator}`)
+                console.log(players);
                 return msg.channel.send(`${user} has reserved a spot for the **${game}** game`)
               }
             }
