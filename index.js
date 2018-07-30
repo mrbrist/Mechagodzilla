@@ -5,6 +5,7 @@ const settings = require('./settings.json')
 
 // Music Queue
 module.exports.queue = {};
+module.exports.players = {};
 
 // Setup the Client
 const client = new CommandoClient({
@@ -18,8 +19,9 @@ const client = new CommandoClient({
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['everyone', 'Commands for everyone'],
-        ['music', 'Music commands']
+        ['mod', 'Moderation commands'],
+        ['music', 'Music commands'],
+        ['everyone', 'Commands for everyone']
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()

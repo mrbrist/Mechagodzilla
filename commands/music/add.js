@@ -10,13 +10,18 @@ module.exports = class AddCommand extends Command {
             group: 'music',
             memberName: 'add',
             description: 'Add a song to the queue',
-            examples: ['add <YouTube URL>']
+            examples: ['add <YouTube URL>'],
+            args: [
+              {
+                  key: 'url',
+                  prompt: 'Enter the YouTube URL you want to play',
+                  type: 'string'
+              }
+            ]
         });
     }
 
-    run(msg) {
-      let url = msg.content.split(' ')[1];
-  		if (url == '' || url === undefined) return msg.channel.send(`You must add a YouTube video url, or id after ${settings.commandPrefix}add`);
+    run(msg, { url }) {
   		yt.getInfo(url, (err, info) => {
   			if(err) return msg.channel.send('Invalid YouTube Link: ' + err);
   			if (!queue.hasOwnProperty(msg.guild.id)) queue[msg.guild.id] = {}, queue[msg.guild.id].playing = false, queue[msg.guild.id].songs = [];
