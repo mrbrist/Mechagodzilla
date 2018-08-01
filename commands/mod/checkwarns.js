@@ -17,6 +17,7 @@ module.exports = class CheckWarnsCommand extends Command {
   run(msg) {
     var warnArr = {}
     var tosend = []
+    var delArr = []
     const modLog = msg.guild.channels.find('name', 'mod-log')
     modLog.fetchMessages()
       .then(messages => {
@@ -25,7 +26,7 @@ module.exports = class CheckWarnsCommand extends Command {
           var userId = messages.array()[i].embeds[0].fields[0].value.replace(/([@<>])/g, '')
           var user = msg.guild.members.find('id', userId)
           var userDiscrim = `${user.user.username}#${user.user.discriminator}`
-          if (msgTimeDiff > 1728000000) { // older than 20 days 20days = 1728000000
+          if (msgTimeDiff > 1) { // older than 20 days    20days = 1728000000
             messages.array()[i].delete()
           }
           if (!warnArr[userDiscrim]) {
@@ -33,17 +34,18 @@ module.exports = class CheckWarnsCommand extends Command {
           }
           warnArr[userDiscrim]++
         }
-        for (var user in warnArr) {
-          tosend.push(`${user}: ${warnArr[user]}`)
-        }
-        function CurWarns() {
-          if (tosend.length > 0) {
-            return `\n\`\`\`${tosend.join('\n')}\`\`\``
-          } else {
-            return ""
-          }
-        }
-        msg.reply(`Displaying current warns and removing old ones... ${CurWarns()}`)
+        // for (var user in warnArr) {
+        //   tosend.push(`${user}: ${warnArr[user]}`)
+        // }
+        // function CurWarns() {
+        //   if (tosend.length > 0) {
+        //     return `\n\`\`\`${tosend.join('\n')}\`\`\``
+        //   } else {
+        //     return ""
+        //   }
+        // }
+        // msg.reply(`Displaying current warns and removing old ones... ${CurWarns()}`)
+        msg.reply('Removing warns older than **20** days...')
       })
       .catch(console.error)
   }
