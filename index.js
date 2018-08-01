@@ -38,11 +38,14 @@ client.on('message', message => {
   const guild = client.guilds.find('name','Minor Annoyance');
   const logChnl = guild.channels.find('name','chat-log')
   var chanName = message.channel.name
+  var d = new Date(message.createdAt);
+  d = new Date(d.getTime() - 3000000);
+  var date_format_str = d.getFullYear().toString()+"-"+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+"-"+(d.getDate().toString().length==2?d.getDate().toString():"0"+d.getDate().toString())+" "+(d.getHours().toString().length==2?d.getHours().toString():"0"+d.getHours().toString())+":"+((parseInt(d.getMinutes()/5)*5).toString().length==2?(parseInt(d.getMinutes()/5)*5).toString():"0"+(parseInt(d.getMinutes()/5)*5).toString())+":00";
   if (!message.author.bot && client.guilds.find('name','Minor Annoyance').id == message.guild.id) {
     if (message.attachments.first() != null) {
-      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.attachments.first().url} \`\`\``)
+      logChnl.send(`\`\`\` <${date_format_str}> | ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.attachments.first().url} \`\`\``)
     } else {
-      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.content} \`\`\``)
+      logChnl.send(`\`\`\` <${date_format_str}> | ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.content} \`\`\``)
     }
   }
 });
