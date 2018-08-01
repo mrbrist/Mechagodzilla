@@ -36,7 +36,14 @@ module.exports = class CheckWarnsCommand extends Command {
         for (var user in warnArr) {
           tosend.push(`${user}: ${warnArr[user]}`)
         }
-        msg.reply(`Displaying current warns and removing old ones... \n\`\`\`${tosend.join('\n')}\`\`\``)
+        function CurWarns() {
+          if (tosend.length > 0) {
+            return `\n\`\`\`${tosend.join('\n')}\`\`\``
+          } else {
+            return ""
+          }
+        }
+        msg.reply(`Displaying current warns and removing old ones... ${CurWarns()}`)
       })
       .catch(console.error)
   }
