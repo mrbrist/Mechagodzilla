@@ -37,11 +37,12 @@ client.on('ready', () => {
 client.on('message', message => {
   const guild = client.guilds.find('name','Minor Annoyance');
   const logChnl = guild.channels.find('name','chat-log')
+  var chanName = message.channel.name
   if (!message.author.bot && client.guilds.find('name','Minor Annoyance').id == message.guild.id) {
     if (message.attachments.first() != null) {
-      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator}: ${message.attachments.first().url} \`\`\``)
+      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.attachments.first().url} \`\`\``)
     } else {
-      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator}: ${message.content} \`\`\``)
+      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.content} \`\`\``)
     }
   }
 });
