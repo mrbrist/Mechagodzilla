@@ -33,6 +33,19 @@ client.on('ready', () => {
     client.user.setActivity('.help');
 });
 
+// Log all messages to the log channel
+client.on('message', message => {
+  const guild = client.guilds.find('name','Bot Testing');
+  const logChnl = guild.channels.find('name','chat-log')
+  if (!message.author.bot && client.guilds.find('name','Bot Testing').id == message.guild.id) {
+    if (message.attachments.first() != null) {
+      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator}: ${message.attachments.first().url} \`\`\``)
+    } else {
+      logChnl.send(`\`\`\` ${message.author.username}#${message.author.discriminator}: ${message.content} \`\`\``)
+    }
+  }
+});
+
 // Log the client in
 client.login(settings.clientSecret);
 // console.log(settings.clientSecret);

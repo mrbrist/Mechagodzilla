@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 const settings = require('../../settings.json');
 const yt = require('ytdl-core');
 
-module.exports = class QueueCommand extends Command {
+module.exports = class WarnCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'warn',

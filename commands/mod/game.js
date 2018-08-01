@@ -3,7 +3,7 @@ const settings = require('../../settings.json');
 const players = require('../../index.js').players;
 const yt = require('ytdl-core');
 
-module.exports = class AddCommand extends Command {
+module.exports = class GameCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'game',
