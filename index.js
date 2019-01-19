@@ -1,51 +1,84 @@
 //Imports
-const { CommandoClient } = require('discord.js-commando');
+const {
+  CommandoClient
+} = require('discord.js-commando');
 const path = require('path');
 const settings = require('./settings.json')
 
 // Music Queue
 module.exports.queue = {};
-module.exports.players = { '459047097547882518': { ow: [ 'Brist#3703','Brist#3703','Brist#3703','Brist#3703','Brist#3703','Brist#3703','Brist#3703' ] } };
+module.exports.players = {};
 
 // Setup the Client
 const client = new CommandoClient({
-    commandPrefix: settings.commandPrefix,
-    unknownCommandResponse: false,
-    owner: settings.ownerID,
-    disableEveryone: true
+  commandPrefix: settings.commandPrefix,
+  unknownCommandResponse: false,
+  owner: settings.ownerID,
+  disableEveryone: true
 });
 
 // Register command groups
 client.registry
-    .registerDefaultTypes()
-    .registerGroups([
-        ['mod', 'Moderation commands'],
-        ['music', 'Music commands'],
-        ['everyone', 'Commands for everyone']
-    ])
-    .registerDefaultGroups()
-    .registerDefaultCommands()
-    .registerCommandsIn(path.join(__dirname, 'commands'));
+  .registerDefaultTypes()
+  .registerGroups([
+    ['mod', 'Moderation commands'],
+    ['music', 'Music commands'],
+    ['everyone', 'Commands for everyone']
+  ])
+  .registerDefaultGroups()
+  .registerDefaultCommands()
+  .registerCommandsIn(path.join(__dirname, 'commands'));
 
 // Run this when the client is ready
 client.on('ready', () => {
-    console.log('Logged in!');
-    client.user.setActivity('.help');
+  console.log('Logged in!');
+  client.user.setActivity('.help');
 });
 
 // Log all messages to the log channel
 client.on('message', message => {
-  const guild = client.guilds.find('name','Minor Annoyance');
-  const logChnl = guild.channels.find('name','chat-log')
+  const guild = client.guilds.find('name', 'Minor Annoyance');
+  const logChnl = guild.channels.find('name', 'chat-log')
+  var u = message.content.match(/(<@.[0-9]+>)/g)
+  if (u !== null) {
+    for (var i = 0; i < u.length; i++) {
+      var parse = u[i].replace(/[<@!>]/g, "")
+      if (message.mentions.users.has(parse)) {
+        var user = message.mentions.users.get(parse)
+        var username = `${user.username}#${user.discriminator}`
+
+        message.content = message.content.replace(u[i], username)
+        console.log(username);
+      }
+    }
+  }
   var chanName = message.channel.name
-  var d = new Date(message.createdAt);
-  d = new Date(d.getTime() - 3000000);
-  var date_format_str = d.getFullYear().toString()+"-"+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+"-"+(d.getDate().toString().length==2?d.getDate().toString():"0"+d.getDate().toString())+" "+(d.getHours().toString().length==2?d.getHours().toString():"0"+d.getHours().toString())+":"+((parseInt(d.getMinutes()/5)*5).toString().length==2?(parseInt(d.getMinutes()/5)*5).toString():"0"+(parseInt(d.getMinutes()/5)*5).toString())+":00";
-  if (!message.author.bot && client.guilds.find('name','Minor Annoyance').id == message.guild.id) {
+  function NOW() {
+    var date = new Date();
+    var aaaa = date.getFullYear();
+    var gg = date.getDate();
+    var mm = (date.getMonth() + 1);
+    if (gg < 10)
+      gg = "0" + gg;
+    if (mm < 10)
+      mm = "0" + mm;
+    var cur_day = aaaa + "-" + mm + "-" + gg;
+    var hours = date.getHours()
+    var minutes = date.getMinutes()
+    var seconds = date.getSeconds();
+    if (hours < 10)
+      hours = "0" + hours;
+    if (minutes < 10)
+      minutes = "0" + minutes;
+    if (seconds < 10)
+      seconds = "0" + seconds;
+    return cur_day + " " + hours + ":" + minutes + ":" + seconds;
+  }
+  if (!message.author.bot && client.guilds.find('name', 'Minor Annoyance').id == message.guild.id) {
     if (message.attachments.first() != null) {
-      logChnl.send(`\`\`\` <${date_format_str}> | ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.attachments.first().url} \`\`\``)
+      logChnl.send(`\`\`\` <${NOW()}> | ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.attachments.first().url} \`\`\``)
     } else {
-      logChnl.send(`\`\`\` <${date_format_str}> | ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.content} \`\`\``)
+      logChnl.send(`\`\`\` <${NOW()}> | ${message.author.username}#${message.author.discriminator} @ #${chanName}: ${message.content} \`\`\``)
     }
   }
 });
