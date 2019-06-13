@@ -1,24 +1,24 @@
-const { Command } = require('discord.js-commando');
+const { Command } = require('discord.js-commando')
 const Discord = require('discord.js')
-const settings = require('../../settings.json');
-const yt = require('ytdl-core');
+const settings = require('../../settings.json')
+const yt = require('ytdl-core')
 
 module.exports = class CheckWarnsCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'checkwarns',
       group: 'mod',
       memberName: 'checkwarns',
       description: 'Warns a user',
       examples: ['checkwarns']
-    });
+    })
   }
 
-  run(msg) {
+  run (msg) {
     var warnArr = {}
     var tosend = []
     var delArr = []
-    const modLog = msg.guild.channels.find('name', 'mod-log')
+    const modLog = msg.guild.channels.find(x => x.name === 'mod-log')
     modLog.fetchMessages()
       .then(messages => {
         for (var i = 0; i < messages.array().length; i++) {
@@ -26,7 +26,7 @@ module.exports = class CheckWarnsCommand extends Command {
           var userId = messages.array()[i].embeds[0].fields[0].value.replace(/([@<>])/g, '')
           var user = msg.guild.members.find('id', userId)
           var userDiscrim = `${user.user.username}#${user.user.discriminator}`
-          if (msgTimeDiff > 1) { // older than 20 days    20days = 1728000000
+          if (msgTimeDiff > 1728000000) { // older than 20 days    20days = 1728000000
             messages.array()[i].delete()
           }
           if (!warnArr[userDiscrim]) {
@@ -49,4 +49,4 @@ module.exports = class CheckWarnsCommand extends Command {
       })
       .catch(console.error)
   }
-};
+}
